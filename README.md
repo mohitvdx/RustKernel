@@ -1,18 +1,49 @@
-To Run, up to latest [commit](https://github.com/mohitvdx/RustKernel/commits/master/), run the following commands:
 
-Note: assuming you have rust installed, if not, install it from https://rustup.rs/
 
-make sure you have rust nightly installed:
-```rustup override set nightly```
+# RustKernel
 
-to build the project:
-```cargo build```
+## Getting Started
 
-to make a bootable disk image:
-```cargo bootimage```
+Follow these steps to build and run the RustKernel project. Ensure that you have Rust installed on your system. If not, you can install it from [rustup.rs](https://rustup.rs/).
 
-to install qemu:
-```brew install qemu```
+### Prerequisites
 
-to run the disk image on qemu:
-```qemu-system-x86_64 -drive format=raw,file=target/x86_64-RustKernel/debug/bootimage-RustKernel.bin```
+Make sure you have Rust nightly installed:
+
+```bash
+rustup override set nightly
+```
+
+### Building the Project
+
+To build the project, run:
+
+```bash
+cargo build
+```
+
+### Creating a Bootable Disk Image
+
+To create a bootable disk image, use the following command:
+
+```bash
+cargo bootimage
+```
+
+### Installing QEMU
+
+If you don't have QEMU installed, you can install it using Homebrew:
+
+```bash
+brew install qemu
+```
+
+### Running the Disk Image on QEMU
+
+Finally, to run the disk image on QEMU, use the command:
+
+```bash
+qemu-system-x86_64 -drive format=raw,file=target/x86_64-RustKernel/debug/bootimage-RustKernel.bin
+```
+
+---
