@@ -4,6 +4,7 @@
 #![feature(custom_test_frameworks)]
 #![test_runner(crate::test_runner)]
 #![reexport_test_harness_main = "test_main"]
+#![feature(abi_x86_interrupt)]
 
 use core::panic::PanicInfo;
 
@@ -70,3 +71,4 @@ pub fn exit_qemu(exit_code: QemuExitCode) {
 
 pub mod serial;
 pub mod vga_buffer;
+pub mod interrupts;
