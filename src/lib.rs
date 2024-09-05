@@ -1,5 +1,4 @@
 #![no_std]
-
 #![cfg_attr(test, no_main)]
 #![feature(custom_test_frameworks)]
 #![test_runner(crate::test_runner)]
@@ -68,7 +67,10 @@ pub fn exit_qemu(exit_code: QemuExitCode) {
     }
 }
 
+pub fn init() {
+    interrupts::init_idt();
+}
 
+pub mod interrupts;
 pub mod serial;
 pub mod vga_buffer;
-pub mod interrupts;

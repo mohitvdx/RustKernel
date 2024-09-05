@@ -46,4 +46,6 @@ Finally, to run the disk image on QEMU, use the command:
 qemu-system-x86_64 -drive format=raw,file=target/x86_64-RustKernel/debug/bootimage-RustKernel.bin
 ```
 
+add the command to run the kernel
+
 ---
