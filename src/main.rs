@@ -21,10 +21,18 @@ pub extern "C" fn _start() -> ! {
     // x86_64::instructions::interrupts::int3();
 
     //trigger a page fault
-    unsafe{
-        *(0xdeadbeef as *mut u8) = 42; //the memory location 0xdeadbeef doesnt exit so page fault occurs, 
-        //since no handler function is present a double fault occurs, and since no handler is present for a double fault a triple fault occurs
-    };
+    // unsafe{
+    //     *(0xdeadbeef as *mut u8) = 42;
+    // };
+    //the memory location 0xdeadbeef doesnt exists
+
+    fn stack_overflow(){
+        stack_overflow();
+    }
+
+    //triggering the stack overflow 
+    stack_overflow();
+    
 
     #[cfg(test)]
     test_main();
