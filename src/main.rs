@@ -18,7 +18,13 @@ pub extern "C" fn _start() -> ! {
     RustKernel::init();
 
     //invoking a breakpoint exception
-    x86_64::instructions::interrupts::int3();
+    // x86_64::instructions::interrupts::int3();
+
+    //trigger a page fault
+    unsafe{
+        *(0xdeadbeef as *mut u8) = 42; //the memory location 0xdeadbeef doesnt exit so page fault occurs, 
+        //since no handler function is present a double fault occurs, and since no handler is present for a double fault a triple fault occurs
+    };
 
     #[cfg(test)]
     test_main();
