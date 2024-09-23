@@ -2,6 +2,11 @@
 
 # RustKernel
 
+<div style="text-align: center;">
+  <img src="./assets/images/pageFaultHandle.png" alt="RustKernel latest progress" style="border-radius: 15px; width: 400px;" />
+</div>
+
+
 ## Getting Started
 
 Follow these steps to build and run the RustKernel project. Ensure that you have Rust installed on your system. If not, you can install it from [rustup.rs](https://rustup.rs/).
