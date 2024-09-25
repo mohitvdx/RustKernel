@@ -2,10 +2,6 @@
 
 # RustKernel
 
-<div style="text-align: center;">
-  <img src="./assets/images/pageFaultHandle.png" alt="RustKernel latest progress" style="border-radius: 15px; width: 400px;" />
-</div>
-
 
 ## Getting Started
 
@@ -51,13 +47,13 @@ Finally, to run the disk image on QEMU, use the command:
 qemu-system-x86_64 -drive format=raw,file=target/x86_64-RustKernel/debug/bootimage-RustKernel.bin
 ```
 
-To run all the tests, use the command:
+### To run all the tests, use the command:
 
 ```bash
 cargo test
 ```
 
-To run the OS in QEMU, use the command:
+### To run the OS in QEMU, use the command:
 
 ```bash
 cargo run
