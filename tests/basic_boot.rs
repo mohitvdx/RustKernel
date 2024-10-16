@@ -1,12 +1,12 @@
 #![no_std]
 #![no_main]
 #![feature(custom_test_frameworks)]
-#![test_runner(RustKernel::test_runner)]
+#![test_runner(rust_kernel::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
 
 use core::panic::PanicInfo;
-use RustKernel::println;
+use rust_kernel::println;
 
 #[no_mangle] // don't mangle the name of this function
 pub extern "C" fn _start() -> ! {
@@ -21,7 +21,7 @@ fn test_runner(tests: &[&dyn Fn()]) {
 
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    RustKernel::test_panic_handler(info)
+    rust_kernel::test_panic_handler(info)
 }
 
 #[test_case]

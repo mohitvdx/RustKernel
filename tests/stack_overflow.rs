@@ -3,17 +3,17 @@
 #![feature(abi_x86_interrupt)]
 
 use core::panic::PanicInfo;
-use RustKernel::serial_print;
+use rust_kernel::serial_print;
 use lazy_static::lazy_static;
 use x86_64::structures::idt::InterruptDescriptorTable;
-use RustKernel::{exit_qemu, QemuExitCode, serial_println};
+use rust_kernel::{exit_qemu, QemuExitCode, serial_println};
 use x86_64::structures::idt::InterruptStackFrame;
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     serial_print!("stack_overflow::stack_overflow...\t");
 
-    RustKernel::gdt::init();
+    rust_kernel::gdt::init();
     init_test_idt();
 
     stack_overflow();
@@ -29,7 +29,7 @@ fn stack_overflow() {
 
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    RustKernel::test_panic_handler(info)
+    rust_kernel::test_panic_handler(info)
 }
 
 lazy_static! {
@@ -38,7 +38,7 @@ lazy_static! {
         unsafe {
             idt.double_fault
                 .set_handler_fn(test_double_fault_handler)
-                .set_stack_index(RustKernel::gdt::DOUBLE_FAULT_IST_INDEX);
+                .set_stack_index(rust_kernel::gdt::DOUBLE_FAULT_IST_INDEX);
         }
 
         idt

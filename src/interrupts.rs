@@ -1,4 +1,4 @@
-use core::error;
+// use core::error;
 
 use crate::{gdt, print, println};
 use lazy_static::lazy_static;
