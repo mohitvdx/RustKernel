@@ -94,8 +94,11 @@ pub fn init() {
     x86_64::instructions::interrupts::enable();
 }
 
+pub mod allocator;
 pub mod gdt;
 pub mod interrupts;
 pub mod serial;
 pub mod vga_buffer;
 pub mod memory;
+
+extern crate alloc;
