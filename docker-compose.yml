@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  kernel:
+    build: .
+    container_name: rust_kernel
+    volumes:
+      - .:/usr/src/app
+    tty: true
+    command: ["qemu-system-x86_64", "-drive", "format=raw,file=/boot/bootimage-rust_kernel.bin", "-serial", "stdio", "-device", "isa-debug-exit,iobase=0xf4,iosize=0x04"]
