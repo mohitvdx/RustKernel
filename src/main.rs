@@ -17,7 +17,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     use rust_kernel::memory::{self, BootInfoFrameAllocator};
     use x86_64::{structures::paging::Page, VirtAddr};
 
-    println!("Hello World{}", "!");
+    println!("Hello from RustKernel{}", "!");
     rust_kernel::init();
 
     let phys_mem_offset = VirtAddr::new(boot_info.physical_memory_offset);
