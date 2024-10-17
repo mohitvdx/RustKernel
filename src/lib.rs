@@ -39,6 +39,10 @@ pub fn test_panic_handler(info: &PanicInfo) -> ! {
 }
 
 /// Entry point for `cargo test`
+
+// #[cfg(test)]
+// entry_point!(test_kernel_main);
+
 #[cfg(test)]
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
@@ -56,8 +60,7 @@ fn panic(info: &PanicInfo) -> ! {
 #[cfg(test)]
 use bootloader::{entry_point, BootInfo};
 
-#[cfg(test)]
-entry_point!(test_kernel_main);
+
 
 #[cfg(test)]
 fn test_kernel_main(boot_info: &'static BootInfo) -> ! {
