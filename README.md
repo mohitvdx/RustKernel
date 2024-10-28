@@ -63,9 +63,24 @@ To run the operating system in QEMU, use the command:
 cargo run
 ```
 
+### Setting Up in Your System Using Docker
+
+1. **Pull the Image from Docker Hub:**
+   ```bash
+   docker pull mohitvermaexe/rustkernel
+   ```
+
+2. **Run the Container Using This Command:**
+   ```bash
+   docker run --name rustkernel-container -p 5900:5900 -p 55556:55555 -p 1234:1234 rustkernel
+   ```
+
+3. **Use a VNC Viewer to View:**
+   Open your VNC viewer and connect to `127.0.0.1:5900` on your host. I am using VNC Viewer for this.
+
 ---
 
-## References
+### References
 
 - [The Rust Programming Language](https://doc.rust-lang.org/book/)
 - [Operating System Concepts (10th Edition, 2018)](https://os.ecci.ucr.ac.cr/slides/Abraham-Silberschatz-Operating-System-Concepts-10th-2018.pdf)

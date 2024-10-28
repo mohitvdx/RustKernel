@@ -1,62 +1,60 @@
-# Use debian as base for better cross-platform support
-FROM --platform=linux/amd64 debian:bullseye AS builder
+# Use Ubuntu as base image for better QEMU support
+FROM ubuntu:22.04
 
 # Prevent interactive prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=Etc/UTC
 
-# Update and install necessary packages in one command to reduce layers
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends \
-        build-essential \
-        curl \
-        ca-certificates \
-        qemu-system-x86 \
-        xorriso \
-        grub2 \
-        python3 \
-        git \
-        pkg-config \
-        libssl-dev \
-        cmake \
+# Install required packages and clean up
+RUN apt-get update && apt-get install -y \
+    curl \
+    build-essential \
+    qemu-system-x86 \
+    python3 \
+    git \
+    xauth \
+    libssl-dev \
+    pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Rust
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+# Install Rust and clean up
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 ENV PATH="/root/.cargo/bin:${PATH}"
 
-# Set up nightly toolchain and required components
+# Set to nightly Rust
 RUN rustup default nightly && \
-    rustup component add rust-src llvm-tools-preview && \
+    rustup component add rust-src && \
+    rustup component add llvm-tools-preview && \  
     cargo install bootimage
 
 # Create working directory
-WORKDIR /rust_kernel
+WORKDIR /rust-kernel
 
 # Copy project files
 COPY . .
 
-# Build the kernel
+# Install any project-specific dependencies
 RUN cargo build
 
-# Create runtime image
-FROM --platform=linux/amd64 debian:bullseye-slim
+# Expose QEMU ports
+# VGA display
+EXPOSE 5900
+# Monitor
+EXPOSE 55555
+# GDB
+EXPOSE 1234
 
-# Install only necessary runtime dependencies
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        qemu-system-x86 \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy the built kernel from builder
-COPY --from=builder /rust_kernel/target/x86_64-RustKernel/debug/bootimage-RustKernel.bin /kernel/
-
-# Create run script
+# Create a script to run QEMU with proper display forwarding
 RUN echo '#!/bin/bash\n\
-qemu-system-x86_64 -drive format=raw,file=/kernel/bootimage-RustKernel.bin -nographic' > /run.sh && \
-chmod +x /run.sh
+cargo bootimage && \
+qemu-system-x86_64 \
+    -drive format=raw,file=target/x86_64-RustKernel/debug/bootimage-RustKernel.bin \
+    -display vnc=:0 \
+    -monitor tcp:0.0.0.0:55555,server,nowait \
+    -gdb tcp:0.0.0.0:1234 \
+    "$@"' > /usr/local/bin/run-kernel && \
+    chmod +x /usr/local/bin/run-kernel
 
-WORKDIR /kernel
-
-ENTRYPOINT ["/run.sh"]
-CMD []
+# Set the default command
+CMD ["run-kernel"]
