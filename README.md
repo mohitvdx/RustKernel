@@ -2,6 +2,7 @@
 ---
 
 # RustKernel
+Project Docs: https://deepwiki.com/mohitvdx/RustKernel
 
 ## Getting Started
 
